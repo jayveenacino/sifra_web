@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sifra</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <div class="logo-icon">
+                    <img src="assets/imgs/icon.png" alt="Sifra">
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+            <a href="sifra_beta.apk" class="nav-cta" download>
+                <span>GET BETA</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 12L3 7L4 6L8 10L12 6L13 7L8 12Z" fill="currentColor"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="grid-lines"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="eyebrow-container">
+                    <span class="eyebrow-badge">LIMITED BETA</span>
+                    <span class="eyebrow-line"></span>
+                </div>
+                
+                <h1 class="hero-title">
+                    <span class="title-line" data-text="PRECISION">PRECISION</span>
+                    <span class="title-line outline" data-text="IN RHYTHM">IN RHYTHM</span>
+                </h1>
+                
+                <p class="hero-subtitle">The minimalist instrumental companion for the modern worship leader. Engineered for stability, designed for focus.</p>
+                
+                <div class="hero-actions">
+                    <a href="sifra_beta.apk" class="btn-primary" download>
+                        <span class="btn-text">Download APK</span>
+                        <span class="btn-version">v1.0</span>
+                        <div class="btn-glow"></div>
+                    </a>
+                    
+                    <div class="platform-info">
+                        <div class="platform-badge android">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="3" width="12" height="18" rx="2"/>
+                                <line x1="12" y1="18" x2="12" y2="18"/>
+                            </svg>
+                            <span>Android</span>
+                        </div>
+                        <div class="divider"></div>
+                        <span class="file-meta">50MB</span>
+                    </div>
+                </div>
+
+                <div class="ios-notice">
+                    <span class="pulse-dot"></span>
+                    <span>iOS Coming Soon</span>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <!-- Phone Group - EVERYTHING moves together as ONE UNIT -->
+                <div class="phone-group">
+                    <!-- Phone Frame -->
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <img src="assets/imgs/login.jpg" alt="Sifra App Interface" class="phone-screen">
+                        <div class="phone-reflection"></div>
+                    </div>
+                    
+                    <!-- Phone Shadow - moves with group -->
+                    <div class="phone-shadow"></div>
+                    
+                    <!-- Floating Cards - part of the group, NO separate animation -->
+                    <div class="float-card card-1">
+                        <div class="card-icon">♪</div>
+                        <div class="card-text">Chord Sheets</div>
+                    </div>
+                    <div class="float-card card-2">
+                        <div class="card-icon">◷</div>
+                        <div class="card-text">Scheduling</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </header>
+
+    <!-- Bento Grid Features -->
+    <main class="content-wrapper" id="features">
+        <div class="section-header">
+            <span class="section-eyebrow">FEATURES</span>
+            <h2 class="section-title">Built for Performance</h2>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card large" data-tilt>
+                <div class="card-content">
+                    <div class="card-icon-large">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <h3>Zero Latency</h3>
+                    <p>Real-time synchronization across all devices. Experience instant updates with our optimized data pipeline.</p>
+                    <div class="stat-highlight">0ms</div>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="card-content">
+                    <h3>4K Assets</h3>
+                    <p>Crisp, high-resolution chord charts and lyrics.</p>
+                    <div class="visual-indicator">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar active"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-card dark" data-tilt>
+                <div class="card-content">
+                    <h3>Dark Mode First</h3>
+                    <p>Designed for low-light stage environments.</p>
+                    <div class="toggle-demo">
+                        <div class="toggle-track">
+                            <div class="toggle-thumb"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-card wide" data-tilt>
+                <div class="card-content">
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="check-icon">✓</div>
+                            <span>Organization-based isolation</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="check-icon">✓</div>
+                            <span>Multi-user collaboration</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="check-icon">✓</div>
+                            <span>Offline capability</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-card cta-card" id="about">
+                <div class="card-content">
+                    <div class="cta-icon">
+                        <img src="assets/imgs/icon.png" alt="Sifra">
+                    </div>
+                    <div class="cta-text">
+                        <h3>Ready to Lead?</h3>
+                        <p>Join the limited beta and shape the future of worship technology.</p>
+                    </div>
+                    <a href="sifra_beta.apk" class="btn-secondary" download>
+                        Install Now
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo-icon">
+                    <img src="assets/imgs/icon.png" alt="Sifra">
+                </div>
+                <span class="brand-tagline">Sifra PH</span>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Terms</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sifra. All rights reserved.</span>
+            <span class="made-with">Made for worship leaders</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
