@@ -338,7 +338,6 @@ body {
 .title-line.outline {
     color: transparent;
     -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-    text-stroke: 1px rgba(255,255,255,0.6);
     animation: shimmer 3s infinite;
 }
 
