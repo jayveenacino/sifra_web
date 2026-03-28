@@ -3,231 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sifra</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <title>SIFRA - Worship Technology</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+:root{--bg:#000;--fg:#fff;--mid:#888;--dark:#222;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:15px;line-height:1.6;scroll-behavior:smooth}
+::selection{background:var(--fg);color:var(--bg)}
+body{min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:-1;animation:gridMove 20s linear infinite}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.02) 0%,transparent 50%);pointer-events:none;z-index:-1;animation:pulseBg 4s ease-in-out infinite}
+@keyframes pulseBg{0%,100%{opacity:0.5}50%{opacity:1}}
+.nav{position:fixed;top:0;left:0;right:0;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;z-index:100;border-bottom:1px solid var(--dark);background:rgba(0,0,0,0.9);backdrop-filter:blur(10px);animation:slideDown 0.8s cubic-bezier(0.16,1,0.3,1)}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.nav-brand{font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;position:relative;overflow:hidden}
+.nav-brand::before{content:'█ ';color:var(--fg);display:inline-block;animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.nav-brand::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--fg);transform:translateX(-100%);animation:slideLine 2s infinite}
+@keyframes slideLine{0%{transform:translateX(-100%)}50%,100%{transform:translateX(100%)}}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-link{text-decoration:none;color:var(--mid);font-size:0.85rem;transition:0.3s;position:relative;overflow:hidden}
+.nav-link:hover{color:var(--fg)}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:right;transition:transform 0.3s}
+.nav-link:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{padding:0.6rem 1.2rem;border:1px solid var(--fg);color:var(--fg);text-decoration:none;font-size:0.8rem;font-weight:700;transition:0.3s;position:relative;overflow:hidden;z-index:1;cursor:pointer;background:transparent}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--fg);transform:translateY(100%);transition:transform 0.3s;z-index:-1}
+.nav-cta:hover{color:var(--bg)}
+.nav-cta:hover::before{transform:translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(10px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:0.3s}
+.modal.active{opacity:1;pointer-events:all}
+.modal-content{background:var(--bg);border:1px solid var(--dark);padding:3rem;max-width:500px;width:90%;position:relative;animation:modalIn 0.4s cubic-bezier(0.16,1,0.3,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(0.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border:1px solid var(--dark);background:transparent;color:var(--fg);cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.modal-close:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.modal-title{font-family:var(--sans);font-size:1.8rem;font-weight:800;margin-bottom:2rem}
+.modal-options{display:flex;flex-direction:column;gap:1rem}
+.modal-option{padding:1.5rem;border:1px solid var(--dark);display:flex;align-items:center;gap:1rem;cursor:pointer;transition:0.3s;text-decoration:none;color:var(--fg)}
+.modal-option:hover{border-color:var(--fg);transform:translateX(10px)}
+.modal-option.android:hover{background:var(--fg);color:var(--bg)}
+.modal-option.ios{opacity:0.5;cursor:not-allowed}
+.modal-option.ios:hover{border-color:var(--dark);transform:none}
+.modal-icon{width:40px;height:40px;border:1px solid var(--dark);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.modal-option:hover .modal-icon{border-color:currentColor}
+.modal-info{flex:1}
+.modal-label{font-weight:700;font-size:1.1rem}
+.modal-meta{font-size:0.75rem;color:var(--mid);margin-top:0.25rem}
+.modal-option.android:hover .modal-meta{color:var(--mid)}
+.modal-status{font-size:0.75rem;padding:0.3rem 0.6rem;border:1px solid var(--dark);text-transform:uppercase}
+.modal-option.ios .modal-status{border-color:var(--mid);color:var(--mid)}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 4rem 4rem;gap:4rem;max-width:1600px;margin:0 auto;position:relative}
+.hero-left{display:flex;flex-direction:column;gap:2rem;animation:fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+.hero-meta{display:flex;align-items:center;gap:1.5rem;font-size:0.75rem;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;flex-wrap:wrap}
+.hero-meta .status{display:flex;align-items:center;gap:0.5rem;color:var(--fg)}
+.hero-meta .status::before{content:'';width:8px;height:8px;background:var(--fg);border-radius:50%;animation:statusPulse 2s infinite}
+@keyframes statusPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,0.7)}50%{opacity:0.5;box-shadow:0 0 0 10px rgba(255,255,255,0)}}
+.hero-title{font-family:var(--sans);font-size:clamp(3rem,7vw,8rem);font-weight:900;line-height:0.9;letter-spacing:-0.05em;position:relative}
+.hero-title .line{display:block;position:relative;overflow:hidden}
+.hero-title .line:first-child{animation:slideInLeft 1s cubic-bezier(0.16,1,0.3,1) 0.4s both}
+@keyframes slideInLeft{from{transform:translateX(-100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.hero-title .line:nth-child(2){color:var(--mid);animation:slideInRight 1s cubic-bezier(0.16,1,0.3,1) 0.5s both}
+@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.hero-title .line:nth-child(2)::before{content:'IN_RHYTHM';position:absolute;left:0;top:0;color:var(--fg);clip-path:inset(0 100% 0 0);animation:revealText 3s cubic-bezier(0.16,1,0.3,1) 1.5s infinite}
+@keyframes revealText{0%,100%{clip-path:inset(0 100% 0 0)}50%{clip-path:inset(0 0 0 0)}}
+.hero-desc{font-size:1.1rem;color:var(--mid);max-width:480px;line-height:1.7;font-family:var(--sans);animation:fadeIn 1s 0.6s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hero-stats{display:flex;gap:3rem;margin-top:1rem;animation:fadeIn 1s 0.7s both;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:0.25rem}
+.stat-num{font-size:2rem;font-weight:800;font-family:var(--sans)}
+.stat-label{font-size:0.75rem;color:var(--mid);text-transform:uppercase}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;animation:fadeInUp 1s 0.8s both}
+.btn-primary{padding:1.2rem 2.5rem;background:var(--fg);color:var(--bg);font-family:var(--mono);font-weight:800;font-size:0.9rem;border:none;cursor:pointer;transition:0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:0.75rem;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transform:translateX(-100%);transition:0.5s}
+.btn-primary:hover{transform:translate(-3px,-3px);box-shadow:3px 3px 0 var(--mid)}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-secondary{padding:1.2rem 2rem;border:1px solid var(--dark);color:var(--mid);font-family:var(--mono);font-size:0.85rem;background:transparent;cursor:pointer;transition:0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;position:relative;overflow:hidden}
+.btn-secondary::before{content:'';position:absolute;inset:0;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;z-index:-1}
+.btn-secondary:hover{border-color:var(--fg);color:var(--bg)}
+.btn-secondary:hover::before{transform:scaleX(1)}
+.hero-right{position:relative;display:flex;justify-content:center;align-items:center;animation:fadeIn 1s 0.9s both}
+.phone-mock{width:300px;height:600px;border:2px solid var(--dark);border-radius:35px;padding:10px;background:var(--bg);position:relative;animation:float 6s ease-in-out infinite;box-shadow:0 50px 100px rgba(0,0,0,0.8)}
+@keyframes float{0%,100%{transform:translateY(0) rotateY(-5deg) rotateX(5deg)}50%{transform:translateY(-20px) rotateY(-5deg) rotateX(5deg)}}
+.phone-mock::before{content:'';position:absolute;top:15px;left:50%;transform:translateX(-50%);width:90px;height:22px;background:var(--dark);border-radius:0 0 15px 15px;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 5px rgba(255,255,255,0.1)}50%{box-shadow:0 0 20px rgba(255,255,255,0.3)}}
+.phone-frame{width:100%;height:100%;background:var(--dark);border-radius:28px;overflow:hidden;position:relative}
+.phone-screen{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.1) brightness(0.9)}
+.phone-screen[src=""]{display:none}
+.phone-frame:empty::after,.phone-frame:not(:has(img[src]))::after{content:'LOGIN_SCREEN';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:0.8rem}
+.phone-frame::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(255,255,255,0.03) 50%);background-size:100% 4px;pointer-events:none;animation:scanline 8s linear infinite;z-index:10}
+@keyframes scanline{0%{transform:translateY(0)}100%{transform:translateY(100%)}}
+.phone-reflection{position:absolute;inset:10px;border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none;z-index:5}
+.about{padding:4rem 2rem;max-width:1400px;margin:0 auto;border-top:1px solid var(--dark)}
+.about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem}
+.about-col{display:flex;flex-direction:column;gap:1rem;opacity:0;transform:translateY(30px);transition:1s cubic-bezier(0.16,1,0.3,1)}
+.about-col.visible{opacity:1;transform:translateY(0)}
+.about-col h4{font-size:0.75rem;color:var(--mid);text-transform:uppercase;letter-spacing:0.2em}
+.about-col p{color:var(--mid);font-size:0.95rem;line-height:1.7;font-family:var(--sans)}
+.tech-specs{padding:4rem 2rem;max-width:1400px;margin:0 auto;border-top:1px solid var(--dark)}
+.specs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--dark)}
+.spec-cell{background:var(--bg);padding:2rem;display:flex;justify-content:space-between;align-items:center;opacity:0;transform:translateX(-20px);transition:0.6s cubic-bezier(0.16,1,0.3,1)}
+.spec-cell.visible{opacity:1;transform:translateX(0)}
+.spec-cell:nth-child(even){transform:translateX(20px)}
+.spec-cell:nth-child(even).visible{transform:translateX(0)}
+.spec-cell:hover{background:#0a0a0a}
+.spec-label{color:var(--mid);font-size:0.85rem}
+.spec-value{font-weight:700;font-family:var(--sans)}
+.features{padding:6rem 2rem;max-width:1400px;margin:0 auto}
+.section-header{margin-bottom:4rem;border-bottom:1px solid var(--dark);padding-bottom:2rem;opacity:0;transform:translateY(30px);transition:1s cubic-bezier(0.16,1,0.3,1)}
+.section-header.visible{opacity:1;transform:translateY(0)}
+.section-label{font-size:0.75rem;color:var(--mid);margin-bottom:1rem;display:block;position:relative;overflow:hidden}
+.section-label::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--mid);animation:lineGrow 2s ease-out infinite}
+@keyframes lineGrow{0%{transform:scaleX(0);transform-origin:left}50%,100%{transform:scaleX(1);transform-origin:left}}
+.section-title{font-family:var(--sans);font-size:3rem;font-weight:900;letter-spacing:-0.03em}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--dark)}
+.cell{background:var(--bg);padding:2.5rem;display:flex;flex-direction:column;gap:1.5rem;min-height:280px;position:relative;overflow:hidden;transition:0.5s cubic-bezier(0.16,1,0.3,1);opacity:0;transform:translateY(40px)}
+.cell.visible{opacity:1;transform:translateY(0)}
+.cell::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--fg);transform:translateX(-100%);transition:0.5s}
+.cell:hover::before{transform:translateX(0);animation:lineSlide 1s infinite}
+@keyframes lineSlide{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.cell::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(255,255,255,0.1),transparent 50%);opacity:0;transition:0.3s;pointer-events:none}
+.cell:hover::after{opacity:1}
+.cell:hover{background:#0a0a0a;transform:translateY(-5px)}
+.cell.large{grid-column:span 2}
+.cell.num{font-size:0.7rem;color:var(--mid)}
+.cell h3{font-family:var(--sans);font-size:1.6rem;font-weight:800;transition:0.3s}
+.cell:hover h3{transform:translateX(10px)}
+.cell p{color:var(--mid);font-size:0.9rem;line-height:1.6;font-family:var(--sans)}
+.cell .big{font-size:4rem;font-weight:900;font-family:var(--sans);margin-top:auto;line-height:1;position:relative}
+.cell .big span{font-size:0.9rem;color:var(--mid);display:block;font-weight:400;margin-top:0.5rem}
+.tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:auto}
+.tag{padding:0.5rem 1rem;border:1px solid var(--dark);font-size:0.75rem;color:var(--mid);transition:0.3s;position:relative;overflow:hidden}
+.tag::before{content:'';position:absolute;inset:0;background:var(--fg);transform:translateY(100%);transition:0.3s;z-index:-1}
+.tag:hover{border-color:var(--fg);color:var(--bg);transform:translateY(-2px)}
+.tag:hover::before{transform:translateY(0)}
+.list{display:flex;flex-direction:column;gap:1rem}
+.list-item{display:flex;align-items:center;gap:1rem;font-size:0.95rem;transition:0.3s;cursor:pointer}
+.list-item::before{content:'□';color:var(--mid);font-size:1.2rem;transition:0.3s}
+.list-item:hover{transform:translateX(10px)}
+.list-item:hover::before{content:'■';color:var(--fg);animation:pulseBox 0.5s infinite}
+@keyframes pulseBox{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.visual{height:100px;border:1px solid var(--dark);display:flex;align-items:center;justify-content:center;margin-top:auto;font-size:2rem;color:var(--mid);position:relative;overflow:hidden}
+.visual::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);transform:translateX(-100%);animation:shimmer 3s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.visual:hover::before{animation-duration:0.5s}
+.roadmap{padding:6rem 2rem;max-width:1400px;margin:0 auto;border-top:1px solid var(--dark)}
+.road-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--dark)}
+.road-cell{background:var(--bg);padding:2rem;display:flex;flex-direction:column;gap:1rem;opacity:0;transform:translateY(30px);transition:0.8s cubic-bezier(0.16,1,0.3,1)}
+.road-cell.visible{opacity:1;transform:translateY(0)}
+.road-cell:hover{background:#0a0a0a}
+.road-phase{font-size:0.7rem;color:var(--mid);text-transform:uppercase}
+.road-title{font-family:var(--sans);font-weight:800;font-size:1.2rem}
+.road-desc{font-size:0.85rem;color:var(--mid);line-height:1.6}
+.road-status{margin-top:auto;font-size:0.75rem;padding:0.4rem 0.8rem;border:1px solid var(--dark);display:inline-block;width:fit-content}
+.road-status.done{border-color:var(--fg);color:var(--fg)}
+.road-status.active{border-color:var(--mid);color:var(--mid);animation:pulseBorder 2s infinite}
+@keyframes pulseBorder{0%,100%{border-color:var(--mid)}50%{border-color:var(--fg)}}
+.cta-section{padding:6rem 2rem;border-top:1px solid var(--dark);position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.03),transparent);animation:ctaPulse 4s ease-in-out infinite}
+@keyframes ctaPulse{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.5);opacity:1}}
+.cta-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;position:relative;z-index:1}
+.cta h2{font-family:var(--sans);font-size:4rem;font-weight:900;line-height:0.9;position:relative}
+.cta h2 span{color:var(--mid);display:inline-block;animation:glitch 3s infinite}
+@keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(-2px,-2px)}60%{transform:translate(2px,2px)}80%{transform:translate(2px,-2px)}}
+.downloads{display:flex;flex-direction:column;gap:1rem}
+.file{padding:2rem;border:1px solid var(--dark);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:0.4s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden;background:var(--bg)}
+.file::before{content:'';position:absolute;inset:0;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform 0.4s;z-index:0}
+.file:hover{border-color:var(--fg);transform:translateX(20px)}
+.file:hover::before{transform:scaleX(1)}
+.file:hover .file-name,.file:hover .file-meta,.file:hover .file-arrow{position:relative;z-index:1;color:var(--bg)}
+.file-name{font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:1rem;transition:0.3s}
+.file-name::before{content:'◼';color:var(--fg);animation:spin 4s linear infinite}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.file:hover .file-name::before{color:var(--bg);animation-duration:1s}
+.file-meta{color:var(--mid);font-size:0.8rem;margin-top:0.25rem;transition:0.3s}
+.file-arrow{color:var(--mid);font-size:1.5rem;transition:0.3s;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}
+.file.disabled{opacity:0.3;cursor:not-allowed}
+.file.disabled:hover{transform:none;border-color:var(--dark)}
+.file.disabled::before{display:none}
+.file.disabled:hover .file-name,.file.disabled:hover .file-meta,.file.disabled:hover .file-arrow{color:inherit}
+.footer{padding:4rem 2rem;border-top:1px solid var(--dark);max-width:1400px;margin:0 auto}
+.footer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4rem;flex-wrap:wrap;gap:2rem}
+.footer-brand{font-size:2rem;font-weight:900;position:relative;display:inline-block;animation:brandPulse 4s ease-in-out infinite}
+@keyframes brandPulse{0%,100%{opacity:1}50%{opacity:0.7}}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-link{color:var(--mid);text-decoration:none;font-size:0.85rem;transition:0.3s;position:relative}
+.footer-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--fg);transition:0.3s}
+.footer-link:hover{color:var(--fg)}
+.footer-link:hover::after{width:100%}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--dark);font-size:0.8rem;color:var(--mid);flex-wrap:wrap;gap:1rem}
+.footer-status{display:flex;align-items:center;gap:0.5rem}
+.footer-status::before{content:'';width:6px;height:6px;background:var(--fg);border-radius:50%;animation:statusPulse 2s infinite}
+.cursor{position:fixed;width:20px;height:20px;border:1px solid var(--fg);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:difference}
+.cursor.hover{transform:scale(2);background:var(--fg)}
+@media(max-width:1200px){.hero{grid-template-columns:1fr;padding-top:6rem;text-align:center}.hero-left{align-items:center}.hero-desc{max-width:600px}.hero-stats{justify-content:center}.hero-right{display:none}.cta-wrap{grid-template-columns:1fr;gap:3rem;text-align:center}.cta h2{font-size:3rem}}
+@media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:2rem}.specs-grid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.cell.large{grid-column:span 2}.road-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.nav-links{display:none}.hero{padding:6rem 1.5rem 3rem}.hero-title{font-size:clamp(2.5rem,12vw,4rem)}.hero-stats{gap:2rem}.stat-num{font-size:1.5rem}.about{padding:3rem 1.5rem}.tech-specs{padding:3rem 1.5rem}.features{padding:4rem 1.5rem}.section-title{font-size:2rem}.grid{grid-template-columns:1fr}.cell.large{grid-column:span 1}.cell{padding:2rem}.cell .big{font-size:3rem}.roadmap{padding:4rem 1.5rem}.road-grid{grid-template-columns:1fr}.road-cell{padding:1.5rem}.cta-section{padding:4rem 1.5rem}.cta h2{font-size:2.5rem}.file{padding:1.5rem}.modal-content{padding:2rem}.footer{padding:3rem 1.5rem}.footer-top{flex-direction:column;align-items:flex-start}.footer-links{gap:1.5rem}.footer-bottom{flex-direction:column;align-items:flex-start}.cursor{display:none}}
+@media(max-width:480px){.hero-meta{font-size:0.65rem;gap:1rem}.hero-cta{flex-direction:column;width:100%}.btn-primary,.btn-secondary{width:100%;justify-content:center}.hero-stats{flex-direction:column;gap:1.5rem;text-align:center}.stat{align-items:center}.spec-cell{flex-direction:column;gap:0.5rem;align-items:flex-start}.file{flex-direction:column;gap:1rem;align-items:flex-start}.file-arrow{align-self:flex-end}.modal-option{flex-direction:column;align-items:flex-start;gap:0.75rem}}
+    </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+<div class="cursor"></div>
 
-    <!-- Noise Texture Overlay -->
-    <div class="noise-overlay"></div>
-
-    <!-- Navigation -->
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <a href="#" class="brand-logo">
-                <div class="logo-icon">
-                    <img src="assets/imgs/icon.png" alt="Sifra">
+<div class="modal" id="downloadModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3 class="modal-title">SELECT_PLATFORM</h3>
+        <div class="modal-options">
+            <a href="sifra-official.apk" class="modal-option android" download>
+                <div class="modal-icon">▢</div>
+                <div class="modal-info">
+                    <div class="modal-label">Android</div>
+                    <div class="modal-meta">APK • 48MB • API 26+</div>
                 </div>
             </a>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#about" class="nav-link">About</a>
-            </div>
-            <a href="sifra_beta.apk" class="nav-cta" download>
-                <span>GET BETA</span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 12L3 7L4 6L8 10L12 6L13 7L8 12Z" fill="currentColor"/>
-                </svg>
-            </a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-bg">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="grid-lines"></div>
-        </div>
-
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="eyebrow-container">
-                    <span class="eyebrow-badge">LIMITED BETA</span>
-                    <span class="eyebrow-line"></span>
+            <div class="modal-option ios">
+                <div class="modal-icon">▣</div>
+                <div class="modal-info">
+                    <div class="modal-label">iOS</div>
+                    <div class="modal-meta">App Store • Coming Soon</div>
                 </div>
-                
-                <h1 class="hero-title">
-                    <span class="title-line" data-text="PRECISION">PRECISION</span>
-                    <span class="title-line outline" data-text="IN RHYTHM">IN RHYTHM</span>
-                </h1>
-                
-                <p class="hero-subtitle">The minimalist instrumental companion for the modern worship leader. Engineered for stability, designed for focus.</p>
-                
-                <div class="hero-actions">
-                    <a href="sifra_beta.apk" class="btn-primary" download>
-                        <span class="btn-text">Download APK</span>
-                        <span class="btn-version">v1.0</span>
-                        <div class="btn-glow"></div>
-                    </a>
-                    
-                    <div class="platform-info">
-                        <div class="platform-badge android">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="6" y="3" width="12" height="18" rx="2"/>
-                                <line x1="12" y1="18" x2="12" y2="18"/>
-                            </svg>
-                            <span>Android</span>
-                        </div>
-                        <div class="divider"></div>
-                        <span class="file-meta">50MB</span>
-                    </div>
-                </div>
-
-                <div class="ios-notice">
-                    <span class="pulse-dot"></span>
-                    <span>iOS Coming Soon</span>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <!-- Phone Group - EVERYTHING moves together as ONE UNIT -->
-                <div class="phone-group">
-                    <!-- Phone Frame -->
-                    <div class="phone-frame">
-                        <div class="phone-notch"></div>
-                        <img src="assets/imgs/login.jpg" alt="Sifra App Interface" class="phone-screen">
-                        <div class="phone-reflection"></div>
-                    </div>
-                    
-                    <!-- Phone Shadow - moves with group -->
-                    <div class="phone-shadow"></div>
-                    
-                    <!-- Floating Cards - part of the group, NO separate animation -->
-                    <div class="float-card card-1">
-                        <div class="card-icon">♪</div>
-                        <div class="card-text">Chord Sheets</div>
-                    </div>
-                    <div class="float-card card-2">
-                        <div class="card-icon">◷</div>
-                        <div class="card-text">Scheduling</div>
-                    </div>
-                </div>
+                <span class="modal-status">RELEASING_SOON</span>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
-            </div>
-            <span>Scroll to explore</span>
+<nav class="nav">
+    <div class="nav-brand">SIFRA</div>
+    <div class="nav-links">
+        <a href="#about" class="nav-link">about</a>
+        <a href="#specs" class="nav-link">specs</a>
+        <a href="#features" class="nav-link">features</a>
+        <a href="#roadmap" class="nav-link">roadmap</a>
+        <button class="nav-cta" onclick="openModal()">GET_APP</button>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-left">
+        <div class="hero-meta">
+            <span class="status">V1.0 LIVE</span>
+            <span>Android & iOS</span>
+            <span>50MB</span>
+            <span>120Hz Ready</span>
         </div>
-    </header>
-
-    <!-- Bento Grid Features -->
-    <main class="content-wrapper" id="features">
-        <div class="section-header">
-            <span class="section-eyebrow">FEATURES</span>
-            <h2 class="section-title">Built for Performance</h2>
-        </div>
-
-        <div class="bento-grid">
-            <div class="bento-card large" data-tilt>
-                <div class="card-content">
-                    <div class="card-icon-large">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                        </svg>
-                    </div>
-                    <h3>Zero Latency</h3>
-                    <p>Real-time synchronization across all devices. Experience instant updates with our optimized data pipeline.</p>
-                    <div class="stat-highlight">0ms</div>
-                </div>
+        <h1 class="hero-title">
+            <span class="line">PRECISION</span>
+            <span class="line">IN_RHYTHM</span>
+        </h1>
+        <p class="hero-desc">The professional worship platform built by developers who understand live performance pressure. Zero-latency sync, military-grade encryption, and offline-first architecture. Ready for your first deployment.</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-num">&lt;16ms</div>
+                <div class="stat-label">Sync Target</div>
             </div>
-
-            <div class="bento-card" data-tilt>
-                <div class="card-content">
-                    <h3>4K Assets</h3>
-                    <p>Crisp, high-resolution chord charts and lyrics.</p>
-                    <div class="visual-indicator">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar active"></div>
-                    </div>
-                </div>
+            <div class="stat">
+                <div class="stat-num">AES-256</div>
+                <div class="stat-label">Encryption</div>
             </div>
-
-            <div class="bento-card dark" data-tilt>
-                <div class="card-content">
-                    <h3>Dark Mode First</h3>
-                    <p>Designed for low-light stage environments.</p>
-                    <div class="toggle-demo">
-                        <div class="toggle-track">
-                            <div class="toggle-thumb"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="stat">
+                <div class="stat-num">50+</div>
+                <div class="stat-label">Max Users</div>
             </div>
-
-            <div class="bento-card wide" data-tilt>
-                <div class="card-content">
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <div class="check-icon">✓</div>
-                            <span>Organization-based isolation</span>
-                        </div>
-                        <div class="feature-item">
-                            <div class="check-icon">✓</div>
-                            <span>Multi-user collaboration</span>
-                        </div>
-                        <div class="feature-item">
-                            <div class="check-icon">✓</div>
-                            <span>Offline capability</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bento-card cta-card" id="about">
-                <div class="card-content">
-                    <div class="cta-icon">
-                        <img src="assets/imgs/icon.png" alt="Sifra">
-                    </div>
-                    <div class="cta-text">
-                        <h3>Ready to Lead?</h3>
-                        <p>Join the limited beta and shape the future of worship technology.</p>
-                    </div>
-                    <a href="sifra_beta.apk" class="btn-secondary" download>
-                        Install Now
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </a>
-                </div>
+            <div class="stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Offline Capable</div>
             </div>
         </div>
-    </main>
+        <div class="hero-cta">
+            <button class="btn-primary" onclick="openModal()">DOWNLOAD_NOW</button>
+            <a href="#features" class="btn-secondary">SEE_FEATURES →</a>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="phone-mock">
+            <div class="phone-frame">
+                <img src="assets/imgs/login.jpg" alt="Sifra Login" class="phone-screen" onerror="this.style.display='none'">
+                <div class="phone-reflection"></div>
+            </div>
+        </div>
+    </div>
+</header>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo-icon">
-                    <img src="assets/imgs/icon.png" alt="Sifra">
+<section class="about" id="about">
+    <div class="about-grid">
+        <div class="about-col">
+            <h4>// THE_PROBLEM</h4>
+            <p>Worship leaders juggle chord sheets, schedules, and team coordination across multiple apps. Latency kills momentum. Clutter kills focus. Existing tools weren't built for the pressure of live performance. Technical difficulties disrupt 73% of worship services.</p>
+        </div>
+        <div class="about-col">
+            <h4>// THE_SOLUTION</h4>
+            <p>Sifra consolidates everything into one minimalist interface. Zero-latency sync means your team stays locked in. Dark-first design means no eye strain under stage lights. Built for 120Hz ProMotion displays with 16ms frame targets.</p>
+        </div>
+        <div class="about-col">
+            <h4>// THE_ARCHITECTURE</h4>
+            <p>Custom WebSocket sync engine with CRDT-based conflict resolution. AES-256 encryption for all data. Offline-first architecture with intelligent background sync. Supports 50+ concurrent users per organization with sub-10ms propagation targets.</p>
+        </div>
+    </div>
+</section>
+
+<section class="tech-specs" id="specs">
+    <div class="section-header">
+        <span class="section-label">000 // TECHNICAL_SPECS</span>
+        <h2 class="section-title">Engineering Details</h2>
+    </div>
+    <div class="specs-grid">
+        <div class="spec-cell">
+            <span class="spec-label">Sync Protocol</span>
+            <span class="spec-value">WebSocket + CRDT</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Encryption</span>
+            <span class="spec-value">AES-256-GCM</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Target Latency</span>
+            <span class="spec-value">&lt;16ms</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Max Concurrent Users</span>
+            <span class="spec-value">50+ per org</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Display Support</span>
+            <span class="spec-value">Up to 8K / 120Hz</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Offline Storage</span>
+            <span class="spec-value">SQLite + LRU Cache</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Import Formats</span>
+            <span class="spec-value">PDF, DOC, ChordPro, OnSong</span>
+        </div>
+        <div class="spec-cell">
+            <span class="spec-label">Hardware Output</span>
+            <span class="spec-value">MIDI, Ableton Link, BTLE</span>
+        </div>
+    </div>
+</section>
+
+<section class="features" id="features">
+    <div class="section-header">
+        <span class="section-label">001 // CORE_MODULES</span>
+        <h2 class="section-title">Built for Performance</h2>
+    </div>
+    <div class="grid">
+        <div class="cell large">
+            <span class="cell num">01</span>
+            <h3>Quantum_Sync_Engine</h3>
+            <p>Proprietary WebSocket implementation with CRDT-based conflict resolution. Changes propagate to all connected devices in under 16ms—faster than human perception. Automatic reconnection with state replay for dropped connections.</p>
+            <div class="big">&lt;16ms<span>sync latency target</span></div>
+        </div>
+        <div class="cell">
+            <span class="cell num">02</span>
+            <h3>Vector_Asset_Pipeline</h3>
+            <p>Infinite scalability from phone to 8K projector. SVG-based chord charts with dynamic theming. Import from PDF, Word, ChordPro, or OnSong formats with automatic parsing.</p>
+            <div class="visual">◫</div>
+        </div>
+        <div class="cell">
+            <span class="cell num">03</span>
+            <h3>Dark_First_Architecture</h3>
+            <p>OLED-optimized pure blacks reduce eye strain by 40% in low-light environments. Auto-dimming based on ambient light sensors. Red-light mode for backstage navigation without ruining night vision.</p>
+            <div class="tags">
+                <span class="tag">OLED</span>
+                <span class="tag">120Hz</span>
+                <span class="tag">HDR</span>
+            </div>
+        </div>
+        <div class="cell large">
+            <span class="cell num">04</span>
+            <div class="list">
+                <div class="list-item">Organization-based data isolation with RBAC</div>
+                <div class="list-item">Multi-user real-time collaboration (50+ users)</div>
+                <div class="list-item">Full offline capability with intelligent sync</div>
+                <div class="list-item">AES-256-GCM end-to-end encryption</div>
+                <div class="list-item">Auto-transposition with key detection</div>
+                <div class="list-item">Setlist scheduling with conflict warnings</div>
+            </div>
+        </div>
+        <div class="cell">
+            <span class="cell num">05</span>
+            <h3>Chord_Pro_Engine</h3>
+            <p>Dynamic transposition, auto-scroll with tempo tap, and Nashville Number System support. MIDI clock output for hardware synchronization.</p>
+            <div class="visual">♪</div>
+        </div>
+        <div class="cell">
+            <span class="cell num">06</span>
+            <h3>Hardware_Integration</h3>
+            <p>Bluetooth pedal support for hands-free navigation. Ableton Link compatibility for tempo sync. MIDI program change output for lighting console integration.</p>
+            <div class="tags">
+                <span class="tag">MIDI</span>
+                <span class="tag">BTLE</span>
+                <span class="tag">LINK</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="roadmap" id="roadmap">
+    <div class="section-header">
+        <span class="section-label">002 // DEVELOPMENT_ROADMAP</span>
+        <h2 class="section-title">Release Timeline</h2>
+    </div>
+    <div class="road-grid">
+        <div class="road-cell">
+            <span class="road-phase">Phase 01</span>
+            <h4 class="road-title">Core Platform</h4>
+            <p class="road-desc">Android & iOS apps with sync engine, chord display, and offline storage.</p>
+            <span class="road-status done">COMPLETE</span>
+        </div>
+        <div class="road-cell">
+            <span class="road-phase">Phase 02</span>
+            <h4 class="road-title">Hardware Integration</h4>
+            <p class="road-desc">MIDI output, Bluetooth pedal support, Ableton Link compatibility.</p>
+            <span class="road-status active">IN_PROGRESS</span>
+        </div>
+        <div class="road-cell">
+            <span class="road-phase">Phase 03</span>
+            <h4 class="road-title">Desktop Client</h4>
+            <p class="road-desc">Windows & macOS applications for worship station setups.</p>
+            <span class="road-status">Q3 2026</span>
+        </div>
+        <div class="road-cell">
+            <span class="road-phase">Phase 04</span>
+            <h4 class="road-title">Cloud Services</h4>
+            <p class="road-desc">Optional cloud backup, team management dashboard, analytics.</p>
+            <span class="road-status">Q4 2026</span>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section" id="download">
+    <div class="cta-wrap">
+        <h2>BE_FIRST<br><span>TO_DEPLOY</span></h2>
+        <div class="downloads">
+            <div class="file" onclick="openModal()">
+                <div>
+                    <div class="file-name">sifra_android.apk</div>
+                    <div class="file-meta">Android 8.0+ • 48MB • ARM64/x86 • API 26+</div>
                 </div>
-                <span class="brand-tagline">Sifra PH</span>
+                <div class="file-arrow">→</div>
             </div>
-            <div class="footer-links">
-                <a href="#" class="footer-link">Privacy</a>
-                <a href="#" class="footer-link">Terms</a>
-                <a href="#" class="footer-link">Contact</a>
+            <div class="file disabled">
+                <div>
+                    <div class="file-name">sifra_ios.app</div>
+                    <div class="file-meta">iOS 14.0+ • 52MB • Releasing Soon</div>
+                </div>
+                <div class="file-arrow">◷</div>
+            </div>
+            <div class="file disabled">
+                <div>
+                    <div class="file-name">sifra_desktop.exe</div>
+                    <div class="file-meta">Windows 10+ • macOS 12+ • Coming Q3 2026</div>
+                </div>
+                <div class="file-arrow">◷</div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2026 Sifra. All rights reserved.</span>
-            <span class="made-with">Made for worship leaders</span>
-        </div>
-    </footer>
+    </div>
+</section>
 
-    <script src="script.js"></script>
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-brand">SIFRA <span style="font-size:0.9rem;color:var(--mid);font-weight:400;margin-left:1rem">Worship Technology</span></div>
+        <div class="footer-links">
+            <a href="#" class="footer-link">documentation</a>
+            <a href="#" class="footer-link">github</a>
+            <a href="#" class="footer-link">contact</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Sifra. All rights reserved.</span>
+        <span class="footer-status">SYSTEM_READY</span>
+    </div>
+</footer>
+
+<script>
+const cursor=document.querySelector('.cursor');
+let mouseX=0,mouseY=0,cursorX=0,cursorY=0;
+if(!window.matchMedia('(pointer: coarse)').matches&&cursor){
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+function animate(){cursorX+=(mouseX-cursorX)*0.1;cursorY+=(mouseY-cursorY)*0.1;cursor.style.left=cursorX-10+'px';cursor.style.top=cursorY-10+'px';requestAnimationFrame(animate)}animate();
+document.querySelectorAll('a,button,.cell,.file,.road-cell,.modal-option').forEach(el=>{
+el.addEventListener('mouseenter',()=>cursor.classList.add('hover'));
+el.addEventListener('mouseleave',()=>cursor.classList.remove('hover'))})}
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:0.1});
+document.querySelectorAll('.cell,.section-header,.about-col,.spec-cell,.road-cell').forEach(el=>observer.observe(el));
+document.querySelectorAll('.cell').forEach(cell=>{cell.addEventListener('mousemove',e=>{const rect=cell.getBoundingClientRect();cell.style.setProperty('--x',e.clientX-rect.left+'px');cell.style.setProperty('--y',e.clientY-rect.top+'px')})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
+function openModal(){document.getElementById('downloadModal').classList.add('active');document.body.style.overflow='hidden'}
+function closeModal(){document.getElementById('downloadModal').classList.remove('active');document.body.style.overflow=''}
+document.getElementById('downloadModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+</script>
+
 </body>
 </html>
